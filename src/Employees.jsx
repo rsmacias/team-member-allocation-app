@@ -1,35 +1,7 @@
-import { useState } from 'react';
-import data from './data.json';
 import femaleProfile from './images/femaleProfile.jpg';
 import maleProfile from './images/maleProfile.jpg';
 
-const Employees = () => {
-
-    const [employees, setEmployees] = useState([...data]);
-    const [selectedTeam, setTeam] = useState("TeamB");
-
-    function handleTeamSelectionChange (event) {
-        console.log(event.target.value);
-        setTeam(event.target.value);
-    }
-
-    function handleEmployeeCardClick (event) {
-        console.log(event.target.value);
-        const transformedEmployees = employees.map((employee) => {
-            if(employee.id === parseInt(event.currentTarget.id)) {
-                if(employee.teamName === selectedTeam) {
-                    return { ...employee, teamName: ''}
-                } else {
-                    return { ...employee, teamName: selectedTeam };
-                }
-            } else {
-                return employee;
-            } 
-        });
-
-        setEmployees(transformedEmployees);
-    }
-
+const Employees = ({employees, selectedTeam, handleTeamSelectionChange, handleEmployeeCardClick}) => {
     return (
         <main className='container'>
             <div className="row justify-content-center mt-3 mb-3">
