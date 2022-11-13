@@ -22,12 +22,10 @@ function App() {
   }, [selectedTeam]);
 
   function handleTeamSelectionChange (event) {
-      console.log(event.target.value);
       setTeam(event.target.value);
   }
 
   function handleEmployeeCardClick (event) {
-      console.log(event.target.value);
       const transformedEmployees = employees.map((employee) => {
           if(employee.id === parseInt(event.currentTarget.id)) {
               if(employee.teamName === selectedTeam) {
