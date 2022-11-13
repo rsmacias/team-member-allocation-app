@@ -23,15 +23,13 @@ export const DataProvider = ({children}) => {
     
       function handleEmployeeCardClick (event) {
           const transformedEmployees = employees.map((employee) => {
-              if(employee.id === parseInt(event.currentTarget.id)) {
-                  if(employee.teamName === selectedTeam) {
-                      return { ...employee, teamName: ''}
-                  } else {
-                      return { ...employee, teamName: selectedTeam };
-                  }
-              } else {
-                  return employee;
-              } 
+            if(employee.id !== parseInt(event.currentTarget.id)) 
+                return employee;
+
+            return { 
+                ...employee, 
+                teamName: employee.teamName === selectedTeam ? '' : selectedTeam
+            };
           });
     
           setEmployees(transformedEmployees);
