@@ -7,74 +7,32 @@ import GroupedTeamMembers from './GroupedTeamMembers';
 import Nav from './Nav';
 import NotFound from './NotFound';
 
-import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import data from './data.json';
+import { DataProvider } from './context/DataContext';
 
 function App() {
 
-  const [employees, setEmployees] = useState(JSON.parse(localStorage.getItem('employeeList')) || [...data]);
-  const [selectedTeam, setTeam] = useState(JSON.parse(localStorage.getItem('selectedItem')) || "TeamB");
-
-  useEffect(() => {
-    // How to read this method: When employees state changes, we update the local storage 
-    localStorage.setItem('employeeList', JSON.stringify(employees));
-  }, [employees]);
-
-  useEffect(() => {
-    localStorage.setItem('selectedItem', JSON.stringify(selectedTeam));
-  }, [selectedTeam]);
-
-  function handleTeamSelectionChange (event) {
-      setTeam(event.target.value);
-  }
-
-  function handleEmployeeCardClick (event) {
-      const transformedEmployees = employees.map((employee) => {
-          if(employee.id === parseInt(event.currentTarget.id)) {
-              if(employee.teamName === selectedTeam) {
-                  return { ...employee, teamName: ''}
-              } else {
-                  return { ...employee, teamName: selectedTeam };
-              }
-          } else {
-              return employee;
-          } 
-      });
-
-      setEmployees(transformedEmployees);
-  }
-
   return (
-    <div>
+    <DataProvider>
       <Router>
         <Nav/>
-        <Header
-          selectedTeam={selectedTeam}
-          teamMemberCount={employees.filter((employee) => employee.teamName === selectedTeam).length}/>
+        <Header />
         <Routes>
           <Route path='/'
                  element={
-                    <Employees 
-                      employees={employees}
-                      selectedTeam={selectedTeam}
-                      handleTeamSelectionChange={handleTeamSelectionChange}
-                      handleEmployeeCardClick={handleEmployeeCardClick} />
+                    <Employees />
                   }>
           </Route>
           <Route path='/GroupedTeamMembers' 
                  element={
-                    <GroupedTeamMembers 
-                      employees={employees}
-                      selectedTeam={selectedTeam}
-                      setTeam={setTeam} />
+                    <GroupedTeamMembers />
                  }>
           </Route>
           <Route path='*' element={<NotFound/>}></Route>
         </Routes>
         <Footer/>
       </Router>
-    </div>
+    </DataProvider>
   );
 }
 

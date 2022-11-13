@@ -1,6 +1,5 @@
-const { createContext } = require("react");
-
-import data from '../data.json';
+import data from './data.json';
+const { createContext, useState, useEffect } = require("react");
 
 const DataContext = createContext({});
 
